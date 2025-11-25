@@ -1,0 +1,86 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: cms_postgres
+    restart: unless-stopped
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME:-basecms}
+      POSTGRES_USER: ${DATABASE_USERNAME:-basecms}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-adminAa@123}
+    ports:
+      - "5432:5432"
+    networks:
+      - cms-web
+  strapi:
+    build:
+      context: ./strapi
+      dockerfile: Dockerfile
+    container_name: cms_strapi
+    restart: unless-stopped
+    env_file:
+      - .env # Strapi environment variables
+    environment:
+      S3_ACCESS_KEY_ID: ${S3_ACCESS_KEY_ID}
+      S3_ACCESS_SECRET: ${S3_ACCESS_SECRET}
+      S3_BUCKET: ${S3_BUCKET}
+      S3_ENDPOINT: ${S3_ENDPOINT}
+      S3_REGION: ${S3_REGION}
+      S3_FORCE_PATH_STYLE: ${S3_FORCE_PATH_STYLE}
+    volumes:
+      - ./strapi:/srv/app
+      - /srv/app/node_modules # Anonymous volume for node_modules to prevent host interference
+    ports:
+      - "1337:1337"
+    depends_on:
+      - postgres
+      - minio
+    networks:
+      - cms-web
+  minio:
+    image: minio/minio
+    container_name: cms_minio
+    restart: unless-stopped
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+      MINIO_BROWSER: "on"
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+    networks:
+      - cms-web
+
+  next:
+    build:
+      context: ./apps/next
+      dockerfile: Dockerfile.dev # Assuming a dev Dockerfile will be created later
+    container_name: cms_frontend
+    restart: unless-stopped
+    env_file:
+      - .env # Next.js environment variables
+    volumes:
+      - ./next:/app
+      - /node_modules # Anonymous volume for node_modules
+    ports:
+      - "3001:3000"
+    environment:
+      NEXT_PUBLIC_API_URL: http://strapi:1337
+      NEXTAUTH_URL: http://localhost:3001 # Example, will be configured properly later
+    depends_on:
+      - strapi
+    networks:
+      - cms-web
+volumes:
+  postgres_data:
+  minio_data:
+
+networks:
+  cms-web:
+    driver: bridge
