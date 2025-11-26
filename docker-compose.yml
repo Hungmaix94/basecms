@@ -57,26 +57,26 @@ services:
     networks:
       - cms-web
 
-  next:
-    build:
-      context: ./apps/next
-      dockerfile: Dockerfile.dev # Assuming a dev Dockerfile will be created later
-    container_name: cms_frontend
-    restart: unless-stopped
-    env_file:
-      - .env # Next.js environment variables
-    volumes:
-      - ./next:/app
-      - /node_modules # Anonymous volume for node_modules
-    ports:
-      - "3001:3000"
-    environment:
-      NEXT_PUBLIC_API_URL: http://strapi:1337
-      NEXTAUTH_URL: http://localhost:3001 # Example, will be configured properly later
-    depends_on:
-      - strapi
-    networks:
-      - cms-web
+#  next:
+#    build:
+#      context: ./next
+#      dockerfile: Dockerfile.dev # Assuming a dev Dockerfile will be created later
+#    container_name: cms_frontend
+#    restart: unless-stopped
+#    env_file:
+#      - .env # Next.js environment variables
+#    volumes:
+#      - ./next:/app
+#      - /node_modules # Anonymous volume for node_modules
+#    ports:
+#      - "3001:3000"
+#    environment:
+#      NEXT_PUBLIC_API_URL: http://strapi:1337
+#      NEXTAUTH_URL: http://localhost:3001 # Example, will be configured properly later
+#    depends_on:
+#      - strapi
+#    networks:
+#      - cms-web
 volumes:
   postgres_data:
   minio_data:
