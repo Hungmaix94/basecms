@@ -5,13 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="eed4e2e4-41ef-44e5-882f-825d534c931a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/d8a299b8-3999-4f20-9fb4-411e03eab4d9.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/d8a299b8-3999-4f20-9fb4-411e03eab4d9.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/d8a299b8-3999-4f20-9fb4-411e03eab4d9/storage_v2/_src_/database/basecms.2Lws7A/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/d8a299b8-3999-4f20-9fb4-411e03eab4d9/storage_v2/_src_/database/basecms.2Lws7A/schema/public.abK9xQ.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/landingpage/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/landingpage/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/landingpage/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/landingpage/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/landingpage/src/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/landingpage/src/app/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/landingpage/src/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/landingpage/src/app/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/strapi" beforeDir="false" afterPath="$PROJECT_DIR$/strapi" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/strapi/.env.example" beforeDir="false" afterPath="$PROJECT_DIR$/strapi/.env.example" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/strapi/config/middlewares.ts" beforeDir="false" afterPath="$PROJECT_DIR$/strapi/config/middlewares.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/strapi/config/plugins.ts" beforeDir="false" afterPath="$PROJECT_DIR$/strapi/config/plugins.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/strapi/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/strapi/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/strapi/src/api/category/content-types/category/schema.json" beforeDir="false" afterPath="$PROJECT_DIR$/strapi/src/api/category/content-types/category/schema.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/strapi/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/strapi/src/index.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,6 +78,7 @@
       <workItem from="1763686612814" duration="9091000" />
       <workItem from="1764034703855" duration="14126000" />
       <workItem from="1764120710706" duration="599000" />
+      <workItem from="1764155332005" duration="395000" />
     </task>
     <servers />
   </component>
