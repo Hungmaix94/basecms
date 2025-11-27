@@ -1,0 +1,28 @@
+{
+    "collectionName": "components_blocks_categories",
+    "info": {
+        "displayName": "Categories",
+        "icon": "folder",
+        "description": "Categories section"
+    },
+    "options": {},
+    "attributes": {
+        "sectionTitle": {
+            "type": "string"
+        },
+        "categories": {
+            "type": "component",
+            "repeatable": true,
+            "component": "elements.category-item"
+        },
+        "variant": {
+            "type": "enumeration",
+            "enum": [
+                "grid",
+                "carousel",
+                "list"
+            ],
+            "default": "grid"
+        }
+    }
+}

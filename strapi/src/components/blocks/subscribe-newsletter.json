@@ -1,0 +1,30 @@
+{
+    "collectionName": "components_blocks_subscribe_newsletters",
+    "info": {
+        "displayName": "Subscribe Newsletter",
+        "icon": "mail",
+        "description": "Newsletter subscription"
+    },
+    "options": {},
+    "attributes": {
+        "title": {
+            "type": "string"
+        },
+        "description": {
+            "type": "text"
+        },
+        "placeholder": {
+            "type": "string",
+            "default": "Enter your email"
+        },
+        "variant": {
+            "type": "enumeration",
+            "enum": [
+                "default",
+                "minimal",
+                "centered"
+            ],
+            "default": "default"
+        }
+    }
+}

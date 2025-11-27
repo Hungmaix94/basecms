@@ -1,0 +1,24 @@
+{
+    "collectionName": "components_blocks_carts",
+    "info": {
+        "displayName": "Cart",
+        "icon": "shopping-cart",
+        "description": "Cart section"
+    },
+    "options": {},
+    "attributes": {
+        "title": {
+            "type": "string",
+            "default": "Your Cart"
+        },
+        "variant": {
+            "type": "enumeration",
+            "enum": [
+                "default",
+                "modal",
+                "drawer"
+            ],
+            "default": "default"
+        }
+    }
+}

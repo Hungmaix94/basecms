@@ -1,0 +1,29 @@
+{
+    "collectionName": "components_blocks_sticky_top_bars",
+    "info": {
+        "displayName": "Sticky Top Bar",
+        "icon": "arrow-up",
+        "description": "Sticky top bar"
+    },
+    "options": {},
+    "attributes": {
+        "message": {
+            "type": "string",
+            "required": true
+        },
+        "cta": {
+            "type": "component",
+            "repeatable": false,
+            "component": "elements.link"
+        },
+        "variant": {
+            "type": "enumeration",
+            "enum": [
+                "default",
+                "announcement",
+                "countdown"
+            ],
+            "default": "default"
+        }
+    }
+}

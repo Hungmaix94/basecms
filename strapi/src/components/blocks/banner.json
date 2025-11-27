@@ -1,0 +1,39 @@
+{
+    "collectionName": "components_blocks_banners",
+    "info": {
+        "displayName": "Banner",
+        "icon": "picture",
+        "description": "Banner section"
+    },
+    "options": {},
+    "attributes": {
+        "title": {
+            "type": "string",
+            "required": true
+        },
+        "description": {
+            "type": "text"
+        },
+        "image": {
+            "type": "media",
+            "multiple": false,
+            "allowedTypes": [
+                "images"
+            ]
+        },
+        "cta": {
+            "type": "component",
+            "repeatable": false,
+            "component": "elements.link"
+        },
+        "variant": {
+            "type": "enumeration",
+            "enum": [
+                "default",
+                "compact",
+                "full-width"
+            ],
+            "default": "default"
+        }
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "collectionName": "components_elements_locations",
+    "info": {
+        "displayName": "Location",
+        "icon": "pin",
+        "description": "A map location"
+    },
+    "options": {},
+    "attributes": {
+        "name": {
+            "type": "string"
+        },
+        "address": {
+            "type": "string"
+        },
+        "latitude": {
+            "type": "float",
+            "required": true
+        },
+        "longitude": {
+            "type": "float",
+            "required": true
+        }
+    }
+}

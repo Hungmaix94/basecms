@@ -1,0 +1,31 @@
+{
+    "collectionName": "components_blocks_faqs",
+    "info": {
+        "displayName": "FAQ",
+        "icon": "question",
+        "description": "FAQ section"
+    },
+    "options": {},
+    "attributes": {
+        "sectionTitle": {
+            "type": "string"
+        },
+        "sectionDescription": {
+            "type": "text"
+        },
+        "faqItems": {
+            "type": "component",
+            "repeatable": true,
+            "component": "elements.faq-item"
+        },
+        "variant": {
+            "type": "enumeration",
+            "enum": [
+                "list",
+                "accordion",
+                "categorized"
+            ],
+            "default": "accordion"
+        }
+    }
+}

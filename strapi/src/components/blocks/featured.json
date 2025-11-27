@@ -1,0 +1,28 @@
+{
+    "collectionName": "components_blocks_featureds",
+    "info": {
+        "displayName": "Featured",
+        "icon": "star",
+        "description": "Featured section"
+    },
+    "options": {},
+    "attributes": {
+        "sectionTitle": {
+            "type": "string"
+        },
+        "items": {
+            "type": "component",
+            "repeatable": true,
+            "component": "elements.feature-item"
+        },
+        "variant": {
+            "type": "enumeration",
+            "enum": [
+                "grid",
+                "list",
+                "carousel"
+            ],
+            "default": "grid"
+        }
+    }
+}

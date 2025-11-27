@@ -1,0 +1,27 @@
+{
+    "collectionName": "components_blocks_instagrams",
+    "info": {
+        "displayName": "Instagram",
+        "icon": "camera",
+        "description": "Instagram feed"
+    },
+    "options": {},
+    "attributes": {
+        "title": {
+            "type": "string"
+        },
+        "accessToken": {
+            "type": "string",
+            "private": true
+        },
+        "variant": {
+            "type": "enumeration",
+            "enum": [
+                "grid",
+                "carousel",
+                "masonry"
+            ],
+            "default": "grid"
+        }
+    }
+}

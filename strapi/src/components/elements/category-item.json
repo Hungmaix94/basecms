@@ -1,0 +1,28 @@
+{
+    "collectionName": "components_elements_category_items",
+    "info": {
+        "displayName": "Category Item",
+        "icon": "folder",
+        "description": "A category item"
+    },
+    "options": {},
+    "attributes": {
+        "name": {
+            "type": "string",
+            "required": true
+        },
+        "description": {
+            "type": "text"
+        },
+        "imageUrl": {
+            "type": "media",
+            "allowedTypes": [
+                "images"
+            ],
+            "multiple": false
+        },
+        "href": {
+            "type": "string"
+        }
+    }
+}

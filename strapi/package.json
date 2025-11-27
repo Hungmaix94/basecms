@@ -1,0 +1,46 @@
+{
+  "name": "strapi",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A Strapi application",
+  "scripts": {
+    "build": "strapi build",
+    "console": "strapi console",
+    "deploy": "strapi deploy",
+    "dev": "strapi develop",
+    "develop": "strapi develop",
+    "seed:example": "node ./scripts/seed.js",
+    "start": "strapi start",
+    "strapi": "strapi",
+    "upgrade": "npx @strapi/upgrade latest",
+    "upgrade:dry": "npx @strapi/upgrade latest --dry"
+  },
+  "dependencies": {
+    "@avorati/strapi-provider-upload-minio": "^1.7.1",
+    "@strapi/plugin-cloud": "5.31.2",
+    "@strapi/plugin-documentation": "^5.31.2",
+    "@strapi/plugin-users-permissions": "5.31.2",
+    "@strapi/strapi": "5.31.2",
+    "fs-extra": "^10.0.0",
+    "mime-types": "^2.1.27",
+    "pg": "8.8.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-router-dom": "^6.0.0",
+    "styled-components": "^6.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "typescript": "^5"
+  },
+  "engines": {
+    "node": ">=20.0.0 <=24.x.x",
+    "npm": ">=6.0.0"
+  },
+  "strapi": {
+    "uuid": "edfb2fb7-f0e7-4d05-905b-2af823dbb104",
+    "installId": "1a8ad59c01410d449c5e9f81f3c25b188174ce612cf2de1b562ea46158c0ed81"
+  }
+}

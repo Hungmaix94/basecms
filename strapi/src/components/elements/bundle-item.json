@@ -1,0 +1,35 @@
+{
+    "collectionName": "components_elements_bundle_items",
+    "info": {
+        "displayName": "Bundle Item",
+        "icon": "gift",
+        "description": "A bundle item"
+    },
+    "options": {},
+    "attributes": {
+        "name": {
+            "type": "string",
+            "required": true
+        },
+        "description": {
+            "type": "text"
+        },
+        "price": {
+            "type": "string"
+        },
+        "items": {
+            "type": "json",
+            "description": "List of items in the bundle"
+        },
+        "imageUrl": {
+            "type": "media",
+            "allowedTypes": [
+                "images"
+            ],
+            "multiple": false
+        },
+        "href": {
+            "type": "string"
+        }
+    }
+}

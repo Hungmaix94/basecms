@@ -1,0 +1,23 @@
+{
+    "collectionName": "components_blocks_contents",
+    "info": {
+        "displayName": "Content",
+        "icon": "file-text",
+        "description": "Content section"
+    },
+    "options": {},
+    "attributes": {
+        "content": {
+            "type": "richtext"
+        },
+        "variant": {
+            "type": "enumeration",
+            "enum": [
+                "default",
+                "centered",
+                "wide"
+            ],
+            "default": "default"
+        }
+    }
+}

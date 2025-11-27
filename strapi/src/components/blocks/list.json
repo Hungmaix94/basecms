@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_blocks_lists",
+  "info": {
+    "displayName": "List",
+    "icon": "list",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "items": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.list-item"
+    }
+  }
+}

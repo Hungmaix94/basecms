@@ -1,0 +1,28 @@
+{
+    "collectionName": "components_blocks_benefits_trusts",
+    "info": {
+        "displayName": "Benefits & Trust",
+        "icon": "shield",
+        "description": "Benefits and trust section"
+    },
+    "options": {},
+    "attributes": {
+        "sectionTitle": {
+            "type": "string"
+        },
+        "benefits": {
+            "type": "component",
+            "repeatable": true,
+            "component": "elements.benefit-item"
+        },
+        "variant": {
+            "type": "enumeration",
+            "enum": [
+                "grid",
+                "list",
+                "icons-only"
+            ],
+            "default": "grid"
+        }
+    }
+}

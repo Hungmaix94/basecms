@@ -1,0 +1,21 @@
+{
+    "collectionName": "components_elements_feature_items",
+    "info": {
+        "displayName": "Feature Item",
+        "icon": "star",
+        "description": "A feature item"
+    },
+    "options": {},
+    "attributes": {
+        "title": {
+            "type": "string"
+        },
+        "description": {
+            "type": "text"
+        },
+        "icon": {
+            "type": "string",
+            "description": "Lucide icon name"
+        }
+    }
+}

@@ -1,0 +1,10 @@
+# Strapi default gitignore
+node_modules
+.tmp
+.cache
+.strapi
+build
+dist
+public/uploads
+database.db
+.env

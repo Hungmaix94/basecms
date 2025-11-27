@@ -1,0 +1,31 @@
+{
+    "collectionName": "components_blocks_contacts",
+    "info": {
+        "displayName": "Contact",
+        "icon": "phone",
+        "description": "Contact section"
+    },
+    "options": {},
+    "attributes": {
+        "sectionTitle": {
+            "type": "string"
+        },
+        "sectionDescription": {
+            "type": "text"
+        },
+        "contactInfo": {
+            "type": "component",
+            "repeatable": false,
+            "component": "elements.contact-info"
+        },
+        "variant": {
+            "type": "enumeration",
+            "enum": [
+                "basic-form",
+                "form-with-info",
+                "form-with-map"
+            ],
+            "default": "basic-form"
+        }
+    }
+}

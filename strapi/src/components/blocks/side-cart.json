@@ -1,0 +1,23 @@
+{
+    "collectionName": "components_blocks_side_carts",
+    "info": {
+        "displayName": "Side Cart",
+        "icon": "shopping-cart",
+        "description": "Side cart component"
+    },
+    "options": {},
+    "attributes": {
+        "title": {
+            "type": "string",
+            "default": "Your Cart"
+        },
+        "variant": {
+            "type": "enumeration",
+            "enum": [
+                "default",
+                "overlay"
+            ],
+            "default": "default"
+        }
+    }
+}

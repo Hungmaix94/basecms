@@ -1,0 +1,35 @@
+{
+  "collectionName": "components_blocks_maps",
+  "info": {
+    "displayName": "Map",
+    "icon": "map",
+    "description": "Map section"
+  },
+  "options": {},
+  "attributes": {
+    "sectionTitle": {
+      "type": "string"
+    },
+    "sectionDescription": {
+      "type": "text"
+    },
+    "locations": {
+      "type": "component",
+      "repeatable": true,
+      "component": "elements.location"
+    },
+    "zoom": {
+      "type": "integer",
+      "default": 14
+    },
+    "variant": {
+      "type": "enumeration",
+      "enum": [
+        "single-marker",
+        "multiple-markers",
+        "route-area"
+      ],
+      "default": "single-marker"
+    }
+  }
+}

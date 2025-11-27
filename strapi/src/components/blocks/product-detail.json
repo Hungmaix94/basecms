@@ -1,0 +1,25 @@
+{
+    "collectionName": "components_blocks_product_details",
+    "info": {
+        "displayName": "Product Detail",
+        "icon": "shopping-bag",
+        "description": "Product detail section"
+    },
+    "options": {},
+    "attributes": {
+        "product": {
+            "type": "component",
+            "repeatable": false,
+            "component": "elements.product-item"
+        },
+        "variant": {
+            "type": "enumeration",
+            "enum": [
+                "default",
+                "extended",
+                "minimal"
+            ],
+            "default": "default"
+        }
+    }
+}

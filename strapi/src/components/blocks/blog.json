@@ -1,0 +1,26 @@
+{
+    "collectionName": "components_blocks_blogs",
+    "info": {
+        "displayName": "Blog",
+        "icon": "pencil",
+        "description": "Blog section"
+    },
+    "options": {},
+    "attributes": {
+        "sectionTitle": {
+            "type": "string"
+        },
+        "description": {
+            "type": "text"
+        },
+        "variant": {
+            "type": "enumeration",
+            "enum": [
+                "default",
+                "grid",
+                "featured"
+            ],
+            "default": "default"
+        }
+    }
+}

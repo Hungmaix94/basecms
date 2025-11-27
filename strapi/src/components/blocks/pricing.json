@@ -1,0 +1,14 @@
+{
+  "collectionName": "components_blocks_pricings",
+  "info": {
+    "displayName": "Pricing",
+    "icon": "priceTag",
+    "description": "Pricing tiers"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    }
+  }
+}

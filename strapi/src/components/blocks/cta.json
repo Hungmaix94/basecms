@@ -1,0 +1,23 @@
+{
+    "collectionName": "components_blocks_ctas",
+    "info": {
+        "displayName": "CTA",
+        "icon": "cursor",
+        "description": "Call to action banner"
+    },
+    "options": {},
+    "attributes": {
+        "title": {
+            "type": "string"
+        },
+        "text": {
+            "type": "text"
+        },
+        "buttonText": {
+            "type": "string"
+        },
+        "buttonLink": {
+            "type": "string"
+        }
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "collectionName": "components_elements_product_items",
+    "info": {
+        "displayName": "Product Item",
+        "icon": "shopping-bag",
+        "description": "A product item"
+    },
+    "options": {},
+    "attributes": {
+        "name": {
+            "type": "string",
+            "required": true
+        },
+        "price": {
+            "type": "string"
+        },
+        "category": {
+            "type": "string"
+        },
+        "image": {
+            "type": "media",
+            "allowedTypes": [
+                "images"
+            ],
+            "multiple": false
+        },
+        "href": {
+            "type": "string"
+        }
+    }
+}

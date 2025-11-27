@@ -1,0 +1,28 @@
+{
+    "collectionName": "components_blocks_product_lists",
+    "info": {
+        "displayName": "Product List",
+        "icon": "list",
+        "description": "Product list section"
+    },
+    "options": {},
+    "attributes": {
+        "sectionTitle": {
+            "type": "string"
+        },
+        "products": {
+            "type": "component",
+            "repeatable": true,
+            "component": "elements.product-item"
+        },
+        "variant": {
+            "type": "enumeration",
+            "enum": [
+                "grid",
+                "list",
+                "carousel"
+            ],
+            "default": "grid"
+        }
+    }
+}

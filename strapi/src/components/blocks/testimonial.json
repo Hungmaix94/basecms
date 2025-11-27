@@ -1,0 +1,28 @@
+{
+    "collectionName": "components_blocks_testimonials",
+    "info": {
+        "displayName": "Testimonial",
+        "icon": "quote",
+        "description": "Testimonial section"
+    },
+    "options": {},
+    "attributes": {
+        "sectionTitle": {
+            "type": "string"
+        },
+        "testimonials": {
+            "type": "component",
+            "repeatable": true,
+            "component": "elements.testimonial-item"
+        },
+        "variant": {
+            "type": "enumeration",
+            "enum": [
+                "grid",
+                "carousel",
+                "single"
+            ],
+            "default": "grid"
+        }
+    }
+}

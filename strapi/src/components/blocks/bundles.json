@@ -1,0 +1,28 @@
+{
+    "collectionName": "components_blocks_bundles",
+    "info": {
+        "displayName": "Bundles",
+        "icon": "gift",
+        "description": "Bundles section"
+    },
+    "options": {},
+    "attributes": {
+        "sectionTitle": {
+            "type": "string"
+        },
+        "bundles": {
+            "type": "component",
+            "repeatable": true,
+            "component": "elements.bundle-item"
+        },
+        "variant": {
+            "type": "enumeration",
+            "enum": [
+                "list",
+                "grid",
+                "featured"
+            ],
+            "default": "grid"
+        }
+    }
+}
