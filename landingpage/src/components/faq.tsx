@@ -16,6 +16,8 @@ interface FaqProps extends React.HTMLAttributes<HTMLDivElement> {
   sectionDescription?: string;
   faqItems: FaqItem[];
   variant?: "list" | "accordion" | "categorized";
+  /** Edit mode flag from Page Builder */
+  editMode?: boolean;
 }
 
 const containerVariants = {
@@ -33,7 +35,7 @@ const itemVariants = {
   visible: { opacity: 1, y: 0 },
 };
 
-export default function Faq({ sectionTitle, sectionDescription, faqItems, variant = "accordion", className, ...props }: FaqProps) {
+export default function Faq({ sectionTitle, sectionDescription, faqItems = [], variant = "accordion", className, editMode, ...props }: FaqProps) {
   const categories = Array.from(new Set(faqItems.map(item => item.category))).filter(Boolean) as string[];
 
   return (

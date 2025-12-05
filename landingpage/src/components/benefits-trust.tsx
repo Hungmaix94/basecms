@@ -17,6 +17,10 @@ const iconMap: { [key: string]: React.ElementType } = {
   check: Check,
 };
 
+import { getStyles, StyleConfig } from "@/lib/styles";
+
+// ... imports
+
 interface BenefitTrustItem {
   title: string;
   description: string;
@@ -29,12 +33,14 @@ interface BenefitsTrustProps extends React.HTMLAttributes<HTMLDivElement> {
   sectionDescription?: string;
   items: BenefitTrustItem[];
   variant?: "icon-list" | "trust-badges" | "detailed-benefit"; // Define 3 variations
+  styles?: StyleConfig;
 }
 
-export default function BenefitsTrust({ sectionTitle, sectionDescription, items, variant = "icon-list", className, ...props }: BenefitsTrustProps) {
+export default function BenefitsTrust({ sectionTitle, sectionDescription, items, variant = "icon-list", className, styles, ...props }: BenefitsTrustProps) {
+  const { style: inlineStyle, className: computedClassName, id } = getStyles(styles, className);
   const firstItem = items?.[0];
   return (
-    <section className={cn("w-full py-12 md:py-24 lg:py-32", className)} {...props}>
+    <section className={cn("w-full py-12 md:py-24 lg:py-32", computedClassName)} style={inlineStyle} id={id} {...props}>
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-4 text-center mb-8">
           <div className="space-y-2">

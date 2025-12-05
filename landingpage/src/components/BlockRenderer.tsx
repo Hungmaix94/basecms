@@ -22,6 +22,7 @@ import StickyTopBar from "@/components/sticky-top-bar";
 import SubscribeNewsletter from "@/components/subscribe-newsletter";
 import Testimonial from "@/components/testimonial";
 import BenefitsTrust from "@/components/benefits-trust";
+import Container from "@/components/container";
 
 // Helper to map icon strings to Lucide components
 import { ShieldCheck, Award, Lightbulb, TrendingUp, Zap, BarChart, Cpu, Layers, Check } from "lucide-react";
@@ -50,6 +51,7 @@ const HeroWrapper = (props: any) => {
             ctaSecondary={props.ctaSecondary}
             variant={props.variant || "default"}
             imagePosition={props.imagePosition || "right"}
+            styles={props.styles}
             {...props}
         />
     );
@@ -109,6 +111,7 @@ const TestimonialWrapper = (props: any) => {
         quote: t.content,
         author: t.authorName,
         role: t.authorRole,
+        avatarUrl: t.authorAvatar?.url ? getStrapiMedia(t.authorAvatar.url) : undefined,
         rating: t.rating,
         ...t
     }));
@@ -159,16 +162,51 @@ const HeaderWrapper = (props: any) => {
         href: link.href
     })) || [];
 
-    const variant = props.variant === 'default' ? 'simple' : props.variant;
+    // Extract logo data from the new component structure
+    const logoData = props?.logo;
+    const logoMedia = logoData?.media;
+
+    // Debug logging
+    console.log('HeaderWrapper - Full props:', props);
+    console.log('HeaderWrapper - logoData:', logoData);
+    console.log('HeaderWrapper - logoMedia:', logoMedia);
+
+    // Only create logo prop if we have a valid media URL
+    const logoProps = logoMedia?.url ? {
+        logo: {
+            url: logoMedia.url,
+            alternativeText: logoMedia.alternativeText || "Brand",
+            width: logoData?.width,
+            height: logoData?.height,
+        },
+        logoVariant: logoData?.variant || "square"
+    } : {};
+
+    console.log('HeaderWrapper - logoProps:', logoProps);
 
     return (
         <Header
-            logoText={props.logoText || "Brand"}
-            logoHref={props.logoHref || "/"}
-            navLinks={navLinks}
-            variant={variant}
             {...props}
+            {...logoProps}
+            navLinks={navLinks}
+            variant={props.variant}
+
         />
+    );
+};
+
+const ContainerWrapper = (props: any) => {
+    return (
+        <Container
+            layout={props.layout}
+            columns={props.columns}
+            gap={props.gap}
+            align={props.align}
+            justify={props.justify}
+            styles={props.styles}
+        >
+            <BlockRenderer blocks={props.content || []} />
+        </Container>
     );
 };
 
@@ -207,6 +245,7 @@ const blockComponents: { [key: string]: React.FC<any> } = {
     "blocks.subscribe-newsletter": SubscribeNewsletter,
     "blocks.testimonial": TestimonialWrapper,
     "blocks.benefits-trust": BenefitsTrustWrapper,
+    "blocks.container": ContainerWrapper,
 };
 
 export default function BlockRenderer({ blocks }: { blocks: any[] }) {

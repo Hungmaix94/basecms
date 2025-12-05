@@ -9,18 +9,24 @@ import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
 
 const bannerVariants = cva(
-    "w-full flex items-center justify-between p-4 rounded-lg",
+    "w-full flex items-center justify-between rounded-xl shadow-lg transition-all duration-300 hover:shadow-2xl",
     {
         variants: {
-            default: "bg-gradient-to-r from-blue-500 to-purple-600 text-white",
-            compact: "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-100",
-            "full-width": "relative overflow-hidden",
+            default: "bg-gradient-to-r from-vibrant-blue via-vibrant-purple to-vibrant-blue bg-[length:200%_100%] hover:bg-right-bottom text-white p-6 md:p-8",
+            compact: "bg-gradient-to-br from-secondary/80 to-secondary text-secondary-foreground dark:from-secondary/60 dark:to-secondary/80 p-4 md:p-6 backdrop-blur-sm",
+            "full-width": "relative overflow-hidden min-h-[200px] md:min-h-[300px] p-8 md:p-12 bg-gradient-to-br from-primary/10 to-accent/10",
         },
         defaultVariants: {
             variant: "default",
         },
     }
 )
+
+import { getStyles, StyleConfig } from "@/lib/styles";
+
+// ... imports
+
+// ... variants
 
 interface BannerProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof bannerVariants> {
     title: string;
@@ -31,6 +37,7 @@ interface BannerProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps
         text: string;
         href: string;
     };
+    styles?: StyleConfig;
 }
 
 export default function Banner({
@@ -41,8 +48,11 @@ export default function Banner({
     cta,
     variant,
     className,
+    styles,
     ...props
 }: BannerProps) {
+    const { style: inlineStyle, className: computedClassName, id } = getStyles(styles, className);
+
     const containerVariants = {
         hidden: { opacity: 0, y: 20 },
         visible: {
@@ -64,7 +74,9 @@ export default function Banner({
     return (
         // @ts-ignore
         <motion.div
-            className={cn(bannerVariants({ variant }), className)}
+            className={cn(bannerVariants({ variant }), computedClassName)}
+            style={inlineStyle}
+            id={id}
             initial="hidden"
             animate="visible"
             variants={containerVariants}
@@ -81,15 +93,15 @@ export default function Banner({
                     />
                 </motion.div>
             )}
-            <div className="relative z-10 flex flex-col md:flex-row items-center justify-between w-full">
-                <motion.div className="flex flex-col gap-2 text-center md:text-left" variants={containerVariants}>
-                    <motion.h2 className="text-2xl font-bold" variants={itemVariants}>{title}</motion.h2>
-                    {description && <motion.p className="text-sm md:text-base max-w-prose"
+            <div className="relative z-10 flex flex-col md:flex-row items-center justify-between w-full gap-6">
+                <motion.div className="flex flex-col gap-3 text-center md:text-left flex-1" variants={containerVariants}>
+                    <motion.h2 className="text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight" variants={itemVariants}>{title}</motion.h2>
+                    {description && <motion.p className="text-sm md:text-base lg:text-lg max-w-2xl opacity-90 leading-relaxed"
                         variants={itemVariants}>{description}</motion.p>}
                 </motion.div>
                 {cta && (
-                    <motion.div variants={itemVariants} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                        <Link href={cta.href} className={cn(buttonVariants({ variant: "secondary" }))}>
+                    <motion.div variants={itemVariants} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="flex-shrink-0">
+                        <Link href={cta.href} className={cn(buttonVariants({ variant: "secondary", size: "lg" }), "shadow-lg hover:shadow-xl transition-shadow font-semibold")}>
                             {cta.text}
                         </Link>
                     </motion.div>

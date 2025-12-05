@@ -2,11 +2,14 @@
 
 import Link from "next/link"
 import { motion } from "framer-motion"
+// import Image from "next/image" // removed in favor of UIImage component
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Menu, Search, User, ShoppingCart, X } from "lucide-react"
 import * as React from "react" // For useState
+import { Logo } from "@/components/ui/logo"
+import type { StrapiMedia } from "@/components/ui/strapi-image";
 
 interface NavLink {
   label: string;
@@ -14,14 +17,21 @@ interface NavLink {
 }
 
 interface HeaderProps extends React.HTMLAttributes<HTMLDivElement> {
-  logoText: string;
-  logoHref: string;
+  /** Logo media object from Strapi */
+  logo?: StrapiMedia;
+  /** Logo shape variant */
+  logoVariant?: "square" | "circle";
+  /** Optional navigation links */
   navLinks?: NavLink[];
+  /** Optional call‑to‑action button */
   ctaButton?: {
     label: string;
     href: string;
   };
-  variant?: "simple" | "auth-search" | "centered-nav";
+  /** Header variant */
+  variant?: "minimal" | "auth-search" | "centered" | "default";
+  /** Edit mode flag from Page Builder */
+  editMode?: boolean;
 }
 
 const containerVariants = {
@@ -46,20 +56,25 @@ const mobileMenuVariants = {
 };
 
 export default function Header({
-  logoText,
-  logoHref,
+  logo,
+  logoVariant = "square",
   navLinks,
   ctaButton,
-  variant = "simple",
+  variant = "default",
   className,
+  editMode,
+  onDrag, // Exclude onDrag to avoid type conflict with framer-motion
+  onDragStart,
+  onDragEnd,
+  onAnimationStart,
+  onAnimationEnd,
   ...props
 }: HeaderProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
 
   return (
-    // @ts-ignore
     <motion.header
-      className={cn("w-full py-4 px-4 md:px-6 border-b", className)}
+      className={cn("sticky top-0 z-50 bg-white w-full py-4 px-4 md:px-6 border-b", className)}
       initial="hidden"
       animate="visible"
       variants={containerVariants}
@@ -67,17 +82,23 @@ export default function Header({
     >
       <div className="container flex items-center justify-between h-14">
         <motion.div variants={itemVariants}>
-          <Link href={logoHref} className="text-xl font-bold">
-            {logoText}
-          </Link>
+          {logo?.url && (
+            <Logo
+              media={logo}
+              variant={logoVariant}
+              width={logo?.width}
+              height={logo?.height}
+              className="w-16 h-16"
+            />
+          )}
         </motion.div>
 
-        {variant === "simple" && (
+        {variant === "minimal" && (
           <>
             <motion.nav className="hidden md:flex gap-4 lg:gap-6" variants={containerVariants}>
               {navLinks?.map((link, index) => (
                 <motion.div key={index} variants={itemVariants}>
-                  <Link href={link.href} className="text-sm font-medium hover:underline underline-offset-4">
+                  <Link href={link.href || "#"} className="text-sm font-medium hover:underline underline-offset-4">
                     {link.label}
                   </Link>
                 </motion.div>
@@ -85,7 +106,7 @@ export default function Header({
             </motion.nav>
             <motion.div className="hidden md:block" variants={itemVariants}>
               {ctaButton && (
-                <Link href={ctaButton.href}>
+                <Link href={ctaButton.href || "#"}>
                   <Button size="sm">{ctaButton.label}</Button>
                 </Link>
               )}
@@ -104,12 +125,12 @@ export default function Header({
           </>
         )}
 
-        {variant === "auth-search" && (
+        {variant === "default" && (
           <>
             <motion.nav className="hidden md:flex flex-1 justify-center gap-4 lg:gap-6" variants={containerVariants}>
               {navLinks?.map((link, index) => (
                 <motion.div key={index} variants={itemVariants}>
-                  <Link href={link.href} className="text-sm font-medium hover:underline underline-offset-4">
+                  <Link href={link.href || "#"} className="text-sm font-medium hover:underline underline-offset-4">
                     {link.label}
                   </Link>
                 </motion.div>
@@ -152,12 +173,12 @@ export default function Header({
           </>
         )}
 
-        {variant === "centered-nav" && (
+        {variant === "centered" && (
           <>
             <motion.div className="hidden md:flex flex-1 justify-end items-center gap-4 lg:gap-6" variants={containerVariants}>
               {navLinks?.slice(0, Math.ceil((navLinks?.length || 0) / 2)).map((link, index) => (
                 <motion.div key={index} variants={itemVariants}>
-                  <Link href={link.href} className="text-sm font-medium hover:underline underline-offset-4">
+                  <Link href={link.href || "#"} className="text-sm font-medium hover:underline underline-offset-4">
                     {link.label}
                   </Link>
                 </motion.div>
@@ -166,7 +187,7 @@ export default function Header({
             <motion.div className="hidden md:flex flex-1 justify-start items-center gap-4 lg:gap-6" variants={containerVariants}>
               {navLinks?.slice(Math.ceil((navLinks?.length || 0) / 2)).map((link, index) => (
                 <motion.div key={index} variants={itemVariants}>
-                  <Link href={link.href} className="text-sm font-medium hover:underline underline-offset-4">
+                  <Link href={link.href || "#"} className="text-sm font-medium hover:underline underline-offset-4">
                     {link.label}
                   </Link>
                 </motion.div>
@@ -198,38 +219,38 @@ export default function Header({
           <nav className="flex flex-col gap-2 p-4">
             {navLinks?.map((link, index) => (
               <motion.div key={index} variants={itemVariants}>
-                <Link href={link.href} className="block px-3 py-2 text-base font-medium hover:bg-muted" onClick={() => setIsMobileMenuOpen(false)}>
+                <Link href={link.href || "#"} className="block px-3 py-2 text-base font-medium hover:bg-muted" onClick={() => setIsMobileMenuOpen(false)}>
                   {link.label}
                 </Link>
               </motion.div>
             ))}
             {ctaButton && (
-                <motion.div variants={itemVariants}>
-                    <Link href={ctaButton.href} className="block px-3 py-2">
-                        <Button className="w-full" onClick={() => setIsMobileMenuOpen(false)}>{ctaButton.label}</Button>
-                    </Link>
-                </motion.div>
+              <motion.div variants={itemVariants}>
+                <Link href={ctaButton.href || "#"} className="block px-3 py-2">
+                  <Button className="w-full" onClick={() => setIsMobileMenuOpen(false)}>{ctaButton.label}</Button>
+                </Link>
+              </motion.div>
             )}
             {variant === "auth-search" && (
-                <>
-                    <motion.div className="px-3 py-2" variants={itemVariants}>
-                        <Input type="search" placeholder="Search..." className="w-full" />
-                    </motion.div>
-                    <motion.div className="flex justify-around py-2" variants={containerVariants}>
-                        <motion.div variants={itemVariants}>
-                            <Button variant="ghost" size="icon" className="w-full">
-                                <ShoppingCart className="h-5 w-5" />
-                                <span className="sr-only">Shopping Cart</span>
-                            </Button>
-                        </motion.div>
-                        <motion.div variants={itemVariants}>
-                            <Button variant="ghost" size="icon" className="w-full">
-                                <User className="h-5 w-5" />
-                                <span className="sr-only">User Profile</span>
-                            </Button>
-                        </motion.div>
-                    </motion.div>
-                </>
+              <>
+                <motion.div className="px-3 py-2" variants={itemVariants}>
+                  <Input type="search" placeholder="Search..." className="w-full" />
+                </motion.div>
+                <motion.div className="flex justify-around py-2" variants={containerVariants}>
+                  <motion.div variants={itemVariants}>
+                    <Button variant="ghost" size="icon" className="w-full">
+                      <ShoppingCart className="h-5 w-5" />
+                      <span className="sr-only">Shopping Cart</span>
+                    </Button>
+                  </motion.div>
+                  <motion.div variants={itemVariants}>
+                    <Button variant="ghost" size="icon" className="w-full">
+                      <User className="h-5 w-5" />
+                      <span className="sr-only">User Profile</span>
+                    </Button>
+                  </motion.div>
+                </motion.div>
+              </>
             )}
           </nav>
         </motion.div>

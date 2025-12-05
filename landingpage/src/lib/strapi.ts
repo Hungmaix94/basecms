@@ -42,8 +42,14 @@ export async function fetchAPI(
         // Trigger API call
         const response = await axios.get(requestUrl, mergedOptions);
         return response.data;
-    } catch (error) {
-        console.error(error);
-        throw new Error(`Please check if your server is running and you set all the required tokens.`);
+    } catch (error: any) {
+        console.error('Strapi API Error:', error);
+        if (error.response) {
+            console.error('Status:', error.response.status);
+            console.error('Data:', error.response.data);
+            console.error('Headers:', error.response.headers);
+        }
+        console.error('Request URL:', error.config?.url);
+        throw error;
     }
 }

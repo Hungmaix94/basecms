@@ -6,6 +6,10 @@ import { cn } from "@/lib/utils"
 import { Card, CardContent } from "@/components/ui/card"
 import { Star } from "lucide-react"
 
+import { getStyles, StyleConfig } from "@/lib/styles";
+
+// ... imports
+
 interface TestimonialItem {
   quote: string;
   author: string;
@@ -19,7 +23,10 @@ interface TestimonialProps extends React.HTMLAttributes<HTMLDivElement> {
   sectionDescription?: string;
   testimonials: TestimonialItem[];
   variant?: "single" | "grid" | "carousel"; // Define 3 variations
+  styles?: StyleConfig;
 }
+
+// ... variants
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -36,11 +43,14 @@ const itemVariants = {
   visible: { opacity: 1, y: 0 },
 };
 
-export default function Testimonial({ sectionTitle, sectionDescription, testimonials, variant = "grid", className, ...props }: TestimonialProps) {
+export default function Testimonial({ sectionTitle, sectionDescription, testimonials, variant = "grid", className, styles, ...props }: TestimonialProps) {
+  const { style: inlineStyle, className: computedClassName, id } = getStyles(styles, className);
   return (
     // @ts-ignore
     <motion.section
-      className={cn("w-full py-12 md:py-24 lg:py-32", className)}
+      className={cn("w-full py-12 md:py-24 lg:py-32", computedClassName)}
+      style={inlineStyle}
+      id={id}
       initial="hidden"
       animate="visible"
       variants={containerVariants}

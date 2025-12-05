@@ -5,7 +5,7 @@ import Link from "next/link"
 import { motion } from "framer-motion"
 import { cn } from "@/lib/utils"
 import { Heart, MessageSquare } from "lucide-react"
-import {Button} from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 
 interface InstagramPost {
   id: string;
@@ -21,6 +21,7 @@ interface InstagramProps extends React.HTMLAttributes<HTMLDivElement> {
   posts: InstagramPost[];
   profileLink?: string;
   variant?: "grid-simple" | "grid-overlay" | "carousel"; // Define 3 variations
+  styles?: any;
 }
 
 const containerVariants = {
@@ -45,12 +46,14 @@ export default function Instagram({
   profileLink,
   variant = "grid-simple",
   className,
+  styles,
   ...props
 }: InstagramProps) {
   return (
     // @ts-ignore
     <motion.section
-      className={cn("w-full py-12 md:py-24 lg:py-32", className)}
+      className={cn("w-full py-12 md:py-24 lg:py-32", className, styles?.className)}
+      id={styles?.elementId}
       initial="hidden"
       animate="visible"
       variants={containerVariants}

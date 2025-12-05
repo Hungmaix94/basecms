@@ -20,6 +20,7 @@ interface BlogProps extends React.HTMLAttributes<HTMLDivElement> {
   sectionTitle: string;
   posts: BlogPost[];
   variant?: "grid" | "list" | "carousel"; // Define 3 variations
+  styles?: any;
 }
 
 const containerVariants = {
@@ -37,11 +38,12 @@ const itemVariants = {
   visible: { opacity: 1, y: 0 },
 };
 
-export default function Blog({ sectionTitle, posts, variant = "grid", className, ...props }: BlogProps) {
+export default function Blog({ sectionTitle, posts, variant = "grid", className, styles, ...props }: BlogProps) {
   return (
     // @ts-ignore
     <motion.section
-      className={cn("w-full py-12 md:py-24 lg:py-32", className)}
+      className={cn("w-full py-12 md:py-24 lg:py-32", className, styles?.className)}
+      id={styles?.elementId}
       initial="hidden"
       animate="visible"
       variants={containerVariants}
@@ -138,41 +140,41 @@ export default function Blog({ sectionTitle, posts, variant = "grid", className,
         )}
 
         {variant === "carousel" && (
-            <motion.div className="flex overflow-x-auto gap-4 py-2" variants={containerVariants}>
-              {posts.map((post, index) => (
-                <motion.div key={index} variants={itemVariants} className="flex-shrink-0 w-80">
-                  <Card>
-                    {post.imageUrl && (
-                      <Link href={post.href}>
-                        <Image
-                          src={post.imageUrl}
-                          alt={post.title}
-                          width={320}
-                          height={200}
-                          className="rounded-t-lg object-cover w-full aspect-[3/2]"
-                        />
-                      </Link>
-                    )}
-                    <CardHeader className="flex-grow">
-                      <CardTitle>
-                        <Link href={post.href}>{post.title}</Link>
-                      </CardTitle>
-                      <CardDescription>
-                        <p className="text-sm text-muted-foreground">{post.description}</p>
-                        <div className="flex items-center gap-2 text-xs mt-2">
-                          <span>{post.category}</span>
-                          <span>•</span>
-                          <span>{post.date}</span>
-                          <span>•</span>
-                          <span>{post.author}</span>
-                        </div>
-                      </CardDescription>
-                    </CardHeader>
-                  </Card>
-                </motion.div>
-              ))}
-            </motion.div>
-          )}
+          <motion.div className="flex overflow-x-auto gap-4 py-2" variants={containerVariants}>
+            {posts.map((post, index) => (
+              <motion.div key={index} variants={itemVariants} className="flex-shrink-0 w-80">
+                <Card>
+                  {post.imageUrl && (
+                    <Link href={post.href}>
+                      <Image
+                        src={post.imageUrl}
+                        alt={post.title}
+                        width={320}
+                        height={200}
+                        className="rounded-t-lg object-cover w-full aspect-[3/2]"
+                      />
+                    </Link>
+                  )}
+                  <CardHeader className="flex-grow">
+                    <CardTitle>
+                      <Link href={post.href}>{post.title}</Link>
+                    </CardTitle>
+                    <CardDescription>
+                      <p className="text-sm text-muted-foreground">{post.description}</p>
+                      <div className="flex items-center gap-2 text-xs mt-2">
+                        <span>{post.category}</span>
+                        <span>•</span>
+                        <span>{post.date}</span>
+                        <span>•</span>
+                        <span>{post.author}</span>
+                      </div>
+                    </CardDescription>
+                  </CardHeader>
+                </Card>
+              </motion.div>
+            ))}
+          </motion.div>
+        )}
       </div>
     </motion.section>
   )

@@ -9,7 +9,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Star, ShoppingCart } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import {HTMLAttributes, useMemo, useState} from "react"
+import { HTMLAttributes, useMemo, useState } from "react"
 // import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select" // Assuming select component is available
 
 interface ProductItem {
@@ -26,6 +26,7 @@ interface ProductListProps extends HTMLAttributes<HTMLDivElement> {
   sectionTitle?: string;
   products: ProductItem[];
   variant?: "grid-simple" | "filterable-list" | "featured-grid"; // Define 3 variations
+  styles?: any;
 }
 
 const containerVariants = {
@@ -43,7 +44,7 @@ const itemVariants = {
   visible: { opacity: 1, y: 0 },
 };
 
-export default function ProductList({ sectionTitle, products, variant = "grid-simple", className, ...props }: ProductListProps) {
+export default function ProductList({ sectionTitle, products, variant = "grid-simple", className, styles, ...props }: ProductListProps) {
   const [filters, setFilters] = useState({ category: "", priceRange: "" }); // For filterable-list
   const [sortBy, setSortBy] = useState(""); // For filterable-list
 
@@ -58,7 +59,8 @@ export default function ProductList({ sectionTitle, products, variant = "grid-si
   return (
     // @ts-ignore
     <motion.section
-      className={cn("w-full py-12 md:py-24 lg:py-32", className)}
+      className={cn("w-full py-12 md:py-24 lg:py-32", className, styles?.className)}
+      id={styles?.elementId}
       initial="hidden"
       animate="visible"
       variants={containerVariants}
@@ -173,13 +175,13 @@ export default function ProductList({ sectionTitle, products, variant = "grid-si
                         <Link href={product.href}>{product.name}</Link>
                       </CardTitle>
                       <CardContent className="p-0 flex items-center justify-between">
-                          <span className="text-xl font-bold">${product.price.toFixed(2)}</span>
-                          {product.rating && (
-                              <div className="flex items-center text-sm text-muted-foreground">
-                              <Star className="w-4 h-4 mr-1 text-primary fill-primary" />
-                              {product.rating} ({product.reviewCount || 0})
-                              </div>
-                          )}
+                        <span className="text-xl font-bold">${product.price.toFixed(2)}</span>
+                        {product.rating && (
+                          <div className="flex items-center text-sm text-muted-foreground">
+                            <Star className="w-4 h-4 mr-1 text-primary fill-primary" />
+                            {product.rating} ({product.reviewCount || 0})
+                          </div>
+                        )}
                       </CardContent>
                       <CardFooter className="p-0 mt-2">
                         <Button size="sm">

@@ -6,6 +6,10 @@ import { motion } from "framer-motion"
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
 
+import { getStyles, StyleConfig } from "@/lib/styles";
+
+// ... imports
+
 interface HeroSectionProps extends React.HTMLAttributes<HTMLDivElement> {
   title: string;
   description: string;
@@ -22,6 +26,7 @@ interface HeroSectionProps extends React.HTMLAttributes<HTMLDivElement> {
   };
   variant?: "default" | "centered-image" | "hero-banner";
   imagePosition?: "left" | "right"; // For default variant
+  styles?: StyleConfig;
 }
 
 const containerVariants = {
@@ -50,13 +55,17 @@ export default function HeroSection({
   variant = "default",
   imagePosition = "right",
   className,
+  styles,
   ...props
 }: HeroSectionProps) {
+  const { style: inlineStyle, className: computedClassName, id } = getStyles(styles, className);
   const withBackground = (variant === 'default' || variant === 'centered-image') && backgroundUrl;
   return (
     // @ts-ignore
     <motion.section
-      className={cn("relative w-full py-12 md:py-24 lg:py-32", withBackground && "isolate", className)}
+      className={cn("relative w-full py-12 md:py-24 lg:py-32", withBackground && "isolate", computedClassName)}
+      style={inlineStyle}
+      id={id}
       initial="hidden"
       animate="visible"
       variants={containerVariants}
@@ -126,20 +135,20 @@ export default function HeroSection({
               {description}
             </motion.p>
             <motion.div className="flex flex-col gap-2 min-[400px]:flex-row" variants={containerVariants}>
-                {ctaPrimary && (
-                    <motion.div variants={itemVariants}>
-                        <Link href={ctaPrimary.href} className={cn(buttonVariants({ size: "lg" }))}>
-                        {ctaPrimary.text}
-                        </Link>
-                    </motion.div>
-                )}
-                {ctaSecondary && (
-                    <motion.div variants={itemVariants}>
-                        <Link href={ctaSecondary.href} className={cn(buttonVariants({ variant: "outline", size: "lg" }))}>
-                        {ctaSecondary.text}
-                        </Link>
-                    </motion.div>
-                )}
+              {ctaPrimary && (
+                <motion.div variants={itemVariants}>
+                  <Link href={ctaPrimary.href} className={cn(buttonVariants({ size: "lg" }))}>
+                    {ctaPrimary.text}
+                  </Link>
+                </motion.div>
+              )}
+              {ctaSecondary && (
+                <motion.div variants={itemVariants}>
+                  <Link href={ctaSecondary.href} className={cn(buttonVariants({ variant: "outline", size: "lg" }))}>
+                    {ctaSecondary.text}
+                  </Link>
+                </motion.div>
+              )}
             </motion.div>
             {imageUrl && (
               <motion.div variants={itemVariants}>
@@ -158,22 +167,22 @@ export default function HeroSection({
         {variant === "hero-banner" && (
           <motion.div className="relative isolate overflow-hidden py-24 sm:py-32 lg:py-40" variants={containerVariants}>
             {imageUrl && (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }}>
-                    <Image
-                        src={imageUrl}
-                        alt={imageAlt}
-                        layout="fill"
-                        objectFit="cover"
-                        className="absolute inset-0 -z-10 h-full w-full object-cover object-right md:object-center"
-                    />
-                </motion.div>
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }}>
+                <Image
+                  src={imageUrl}
+                  alt={imageAlt}
+                  layout="fill"
+                  objectFit="cover"
+                  className="absolute inset-0 -z-10 h-full w-full object-cover object-right md:object-center"
+                />
+              </motion.div>
             )}
             <div className="mx-auto max-w-7xl px-6 lg:px-8">
               <div className="mx-auto max-w-2xl lg:mx-0">
                 <motion.h2 className="text-4xl font-bold tracking-tight text-white sm:text-6xl" variants={itemVariants}>
                   {title}
                 </motion.h2>
-                <motion.p className="mt-6 text-lg leading-8 text-gray-300" variants={itemVariants}>
+                <motion.p className="mt-6 text-lg leading-8 text-primary-foreground" variants={itemVariants}>
                   {description}
                 </motion.p>
                 <motion.div className="mt-10 flex items-center gap-x-6" variants={containerVariants}>
