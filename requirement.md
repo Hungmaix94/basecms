@@ -1,104 +1,138 @@
-Project: Next.js landing + blog + auth + CMS
-Base: https://github.com/naufaldi/next-landing-vpn#
+# System Requirements & Block Component Specifications
 
-Requirements:
-- Frontend: Next.js (App Router), TypeScript, TailwindCSS, ShadCN UI, react-hook-form, react-query, dayjs.
-- Rendering: SSG + ISR. Pre-generate main pages; blog posts and blog list use ISR with revalidate and on-demand revalidate.
-- Backend: Strapi v4 (headless) using PostgreSQL.
-- Auth: JWT via Strapi for register/login; Next.js client stores access token in httpOnly cookie; protect user pages.
-- Storage: Postgres for Strapi content, Adminer for DB admin.
-- Dev container: docker-compose for Next.js, Strapi, Postgres, Adminer. Use volumes for DB and Strapi uploads.
-- Package manager: yarn (or pnpm optional).
-- Focus: performance, SEO, accessible components, minimal runtime for ISR (explain hosting choices).
+This document outlines the requirements and specifications for the CMS block components used in the Landing Page application. These blocks are managed in Strapi and rendered dynamically in the Next.js frontend via `BlockRenderer`.
 
-Pages & features to implement:
-- Landing (homepage): hero, CTA, features, Pricing summary, Testimonials, footer with contact form.
-- Blog index (SSG/ISR): list posts, pagination, search (client-side).
-- Blog post detail (ISR): pre-generate popular posts with generateStaticParams; `export const revalidate = 60` (configurable).
-- Contact form: posts to Strapi `contacts` content-type; server action or API route to submit, store in Strapi, send optional email (SMTP env).
-- Auth: register/login pages using Strapi endpoints; secure area (e.g., /dashboard) that fetches user-specific data.
-- FAQ, UserGuide, Pricing, About Us, Testimonials/Reviews pages (SSG).
-- Admin actions: after CMS update, call Next.js on-demand revalidate (use `revalidatePath` or `revalidateTag` via Next.js server actions or Strapi webhook).
-- Components: shadcn-styled Button, Input, Textarea, Card, Modal, Nav, Footer, BlogCard, Markdown renderer (use `react-markdown` + rehype plugins).
-- Forms: use react-hook-form + zod/yup for validation.
-- Data fetching: use Next.js server components for SSG/ISR pages; use react-query for client data (comments, user dashboard).
-- SEO: dynamic metadata per page, OpenGraph tags, structured data for blog posts.
+## 1. Core Architecture
+- **CMS**: Strapi (Headless CMS)
+- **Frontend**: Next.js (React)
+- **Rendering Strategy**: Dynamic Component Mapping via `BlockRenderer.tsx`
+- **Styling**: Tailwind CSS + Shadcn UI
 
-Strapi content types (fields):
-1. `post`
-- title (string)
-- slug (uid)
-- excerpt (text)
-- content (rich-text / markdown)
-- cover_image (media)
-- publishedAt (datetime)
-- tags (relation many)
-- author (relation)
-- featured (boolean)
-2. `author`
-- name, bio, avatar
-3. `page` (for static pages like About, Pricing, UserGuide)
-- title, slug(uid), content(rich-text), meta (JSON)
-4. `testimonial`
-- name, role, company, quote, avatar, rating
-5. `faq`
-- question, answer, order
-6. `contact`
-- name, email, message, status
-7. `user` (Strapi default) used for auth
-8. `pricing_plan`
-- name, price, features (JSON/array)
+## 2. Block Component Specifications
 
-Strapi API endpoints (examples):
-- `GET /posts` (with query params `_limit`, `_start`, `_sort`)
-- `GET /posts?filters[slug][$eq]=:slug`
-- `POST /contacts` (public or protected)
-- `POST /auth/local/register`
-- `POST /auth/local` (login)
-- Strapi webhook: on content change POST to Next.js revalidate endpoint.
+The following blocks are available for page composition.
 
-Docker compose (services summary):
-- `postgres` (image: postgres:15) with volume `postgres_data`
-- `strapi` (image: strapi/strapi or local build)
-    - env: DATABASE_CLIENT=postgres, DB_HOST=postgres, DB_PORT=5432, DB_NAME, DB_USERNAME, DB_PASSWORD, JWT_SECRET, ADMIN_JWT_SECRET, APP_KEYS
-    - volumes: ./strapi:/srv/app
-- `next` (node:18) – dev and production Dockerfiles
-    - build args, ports 3000, env: NEXT_PUBLIC_API_URL=http://strapi:1337, NEXTAUTH_URL
-    - mount for dev, or static build output for production
-- `adminer` (phpmyadmin-like): for DB access (optional)
-- network: web
+### 2.1 Hero Section (`blocks.hero`)
+**Purpose**: Main introductory section of a page.
+**React Component**: `HeroSection`
+**Fields**:
+- `title` (Text): Main headline. Defaults to "Welcome".
+- `description` (Text/Rich Text): Subtitle or introductory text.
+- `image` (Media): Hero image.
+  - `url`: Image URL.
+  - `alternativeText`: Alt text.
+- `ctaPrimary` (Component): Primary Call-to-Action button.
+- `ctaSecondary` (Component): Secondary Call-to-Action button.
+- `variant` (Enumeration): Visual style. Defaults to "default".
+- `imagePosition` (Enumeration): "left" or "right". Defaults to "right".
 
-Example docker-compose.yml (short):
-- Provide services with restart, depends_on, volumes, env_file. (Implement in repo.)
+### 2.2 Benefits & Trust / Features (`blocks.benefits-trust`, `blocks.features`, `blocks.featured`)
+**Purpose**: Displaying key benefits, features, or trust indicators (logos, icons).
+**React Component**: `BenefitsTrust`
+**Fields**:
+- `sectionTitle` (Text): Section header.
+- `sectionDescription` (Text): Description text.
+- `items` or `benefits` (Repeater): List of items.
+  - `icon` (String): Icon name (mapped to Lucide icons).
+  - `title`: Item title.
+  - `description`: Item description.
+- `variant` (Enumeration): Layout style. Defaults to "icon-list".
 
-Next.js specifics:
-- App Router pages: use `generateStaticParams` for posts to prerender top n posts; `export const revalidate = 60` in `app/blog/[slug]/page.tsx`.
-- Use `fetch(url, { next: { revalidate: 60 } })` in server components when calling Strapi.
-- On-demand revalidation: create server action or API route `/api/revalidate` that validates secret and calls `res.revalidate()` or uses `revalidatePath` / `revalidateTag` depending on App Router setup. Configure Strapi webhook to call it on content changes.
-- Authentication: handle JWT via Strapi responses, store token in httpOnly cookie, refresh on login; implement server-side check in protected server components via cookie.
-- Image: use Next Image with remotePatterns allowing Strapi media host.
-- Performance: compose small bundles, use ShadCN components + cva, avoid heavy client JS; use islands for interactive parts only.
+### 2.3 Content Section (`blocks.content`)
+**Purpose**: General purpose text content block.
+**React Component**: `Content`
+**Fields**:
+- `title` (Text): Section title.
+- `content` (Rich Text): Main body content.
+- `variant` (Enumeration): Style variant. Defaults to "text-only".
 
-Scripts & env:
-- `.env.local` vars for Next and Strapi, DB creds, JWT secrets, SMTP.
-- package.json scripts: dev, build, start, strapi:develop, strapi:build.
+### 2.4 Product List (`blocks.product-list`)
+**Purpose**: Display a grid or list of products.
+**React Component**: `ProductList`
+**Fields**:
+- `sectionTitle` (Text): Title for the product section.
+- `products` (Relation/Repeater): List of products.
+  - `name`: Product name.
+  - `price`: Product price (string or number).
+  - `category`: Product category.
+  - `href`: Link to product page.
+- `variant` (Enumeration): Grid style. Defaults to "grid-simple".
 
-Deployment notes:
-- For ISR you need hosting with server/edge runtime (Vercel, Netlify Edge, Render with functions, Cloudflare Pages + Workers not recommended for ISR unless using edge adapters). If purely static, you can export static; but ISR requires runtime for regeneration.
-- Use Vercel for easiest ISR + On-demand revalidate.
+### 2.5 Testimonials (`blocks.testimonial`)
+**Purpose**: Customer reviews and social proof.
+**React Component**: `Testimonial`
+**Fields**:
+- `sectionTitle` (Text): Section header.
+- `testimonials` (Repeater): List of testimonials.
+  - `content` (Text): The quote/review text.
+  - `authorName` (Text): Name of the reviewer.
+  - `authorRole` (Text): Job title or role.
+  - `rating` (Number): Star rating (1-5).
+- `variant` (Enumeration): Layout style. Defaults to "grid".
 
-Deliverables:
-- Repo scaffolded from base, with:
-    - `apps/next` (Next.js app)
-    - `apps/strapi` (Strapi project)
-    - `docker-compose.yml`
-    - README with run commands, deploy notes, env example, webhook setup
-    - Minimal production Dockerfiles for Next and Strapi
+### 2.6 Blog / Latest Updates (`blocks.blog`)
+**Purpose**: Display latest blog posts or news.
+**React Component**: `Blog`
+**Fields**:
+- `sectionTitle` (Text): Section header. Defaults to "Latest Updates".
+- `posts` (Relation/Repeater): List of blog posts.
+  - `imageUrl`: Featured image.
+  - `href`: Link to post.
+- `variant` (Enumeration): Layout style. Defaults to "grid".
 
-Non-functional requirements:
-- TypeScript strict mode
-- ESLint + Prettier
-- Accessibility (aria where appropriate)
-- Unit tests skeleton (Jest) and Storybook for common UI components (optional)
+### 2.7 Header (`blocks.header`)
+**Purpose**: Site navigation and branding.
+**React Component**: `Header`
+**Fields**:
+- `links` (Repeater): Navigation links.
+  - `text`: Link label.
+  - `href`: Link URL.
+- `logo` (Component): Logo configuration.
+  - `media`: Image file.
+  - `width`: Display width.
+  - `height`: Display height.
+  - `variant`: Logo shape variant (e.g., "square", "circle").
+- `variant`: Header style variant.
 
-Please generate file tree, key files (Next app router pages for home, blog index, blog [slug], contact API), Strapi model schemas (JSON), and a runnable `docker-compose.yml` exactly matching above. Use yarn. Keep code minimal but production-ready and document how to run locally and how to set Strapi webhook to call Next.js revalidate endpoint.
+### 2.8 Instagram Feed (`blocks.instagram`)
+**Purpose**: Display social media feed.
+**React Component**: `Instagram`
+**Fields**:
+- `title` (Text): Section title.
+- `variant` (Enumeration): Layout style. Defaults to "grid-simple".
+
+### 2.9 Map (`blocks.map`)
+**Purpose**: Display a map (e.g., Google Maps embed).
+**React Component**: `MapComponent`
+**Fields**:
+- Direct prop mapping from Strapi data.
+
+### 2.10 Other Available Blocks
+The following blocks are registered but map directly to their respective components without complex transformation wrappers:
+- `blocks.banner` -> `Banner`
+- `blocks.bundles` -> `Bundles`
+- `blocks.categories` -> `Categories`
+- `blocks.cart` -> `Cart`
+- `blocks.contact` -> `Contact`
+- `blocks.faq` -> `Faq`
+- `blocks.product-detail` -> `ProductDetail`
+- `blocks.side-cart` -> `SideCart`
+- `blocks.sticky-top-bar` -> `StickyTopBar`
+- `blocks.subscribe-newsletter` -> `SubscribeNewsletter`
+
+## 3. Shared Resources
+
+### 3.1 Icon Mapping
+The `BenefitsTrust` component supports the following icon strings (mapped to Lucide React icons):
+- `shield`
+- `award`
+- `lightbulb`
+- `trending`
+- `zap`
+- `bar-chart`
+- `cpu`
+- `layers`
+- `check`
+
+### 3.2 Global UI Components
+The system utilizes a shared UI library (likely Shadcn UI) located in `src/components/ui`.

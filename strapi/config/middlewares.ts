@@ -27,6 +27,11 @@ export default [
             'http://localhost:9000',
             'market-assets.strapi.io',
           ],
+          'frame-src': [
+            "'self'",
+            'http://localhost:3000',
+            'https://pagebuilder.wc8.io'
+          ],
           upgradeInsecureRequests: null,
         },
       },

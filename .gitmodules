@@ -1,3 +1,6 @@
 [submodule "packages/strapi-page-builder-react"]
 	path = packages/strapi-page-builder-react
 	url = git@github.com:Hungmaix94/strapi-page-builder-react.git
+[submodule "packages/strapi-page-builder"]
+	path = packages/strapi-page-builder
+	url = git@github.com:Hungmaix94/strapi-page-builder.git

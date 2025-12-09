@@ -27,6 +27,7 @@ export default {
             {
               __component: 'blocks.header',
               variant: 'default',
+              // Logo will be added manually via Strapi admin after uploading an image
               links: [
                 { text: 'Home', href: '/', variant: 'default' },
                 { text: 'Features', href: '#features', variant: 'default' },

@@ -34,6 +34,11 @@
                 "full-width"
             ],
             "default": "default"
+        },
+        "styles": {
+            "type": "component",
+            "repeatable": false,
+            "component": "elements.style-config"
         }
     }
 }

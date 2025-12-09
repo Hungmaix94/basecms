@@ -8,11 +8,9 @@
     "options": {},
     "attributes": {
         "logo": {
-            "type": "media",
-            "multiple": false,
-            "allowedTypes": [
-                "images"
-            ]
+            "type": "component",
+            "repeatable": false,
+            "component": "elements.logo"
         },
         "links": {
             "type": "component",
