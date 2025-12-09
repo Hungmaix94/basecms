@@ -1,0 +1,23 @@
+{
+    "collectionName": "components_elements_style_configs",
+    "info": {
+        "displayName": "Style Config",
+        "icon": "paint-brush",
+        "description": "Configuration for component styles"
+    },
+    "options": {},
+    "attributes": {
+        "className": {
+            "type": "string",
+            "description": "Tailwind classes to add or override"
+        },
+        "inlineStyles": {
+            "type": "json",
+            "description": "Inline CSS styles (JSON format)"
+        },
+        "elementId": {
+            "type": "string",
+            "description": "Unique ID for the section"
+        }
+    }
+}

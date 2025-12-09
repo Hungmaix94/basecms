@@ -47,6 +47,11 @@
                 "right"
             ],
             "default": "right"
+        },
+        "styles": {
+            "type": "component",
+            "repeatable": false,
+            "component": "elements.style-config"
         }
     }
 }

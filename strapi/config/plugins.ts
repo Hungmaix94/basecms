@@ -33,9 +33,12 @@ export default ({ env }) => {
                     endPoint: endPoint,
                     port: port,
                     useSSL: useSSL,
-                    private: true, // Enable signed URLs for private buckets
+                    private: false, // Use public URLs for better performance
                 },
             },
+        },
+        'page-builder': {
+            enabled: true,
         },
     };
 };

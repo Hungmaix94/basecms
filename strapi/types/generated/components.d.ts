@@ -11,6 +11,7 @@ export interface BlocksBanner extends Struct.ComponentSchema {
     cta: Schema.Attribute.Component<'elements.link', false>;
     description: Schema.Attribute.Text;
     image: Schema.Attribute.Media<'images'>;
+    styles: Schema.Attribute.Component<'elements.style-config', false>;
     title: Schema.Attribute.String & Schema.Attribute.Required;
     variant: Schema.Attribute.Enumeration<
       ['default', 'compact', 'full-width']
@@ -120,6 +121,7 @@ export interface BlocksContent extends Struct.ComponentSchema {
   };
   attributes: {
     content: Schema.Attribute.RichText;
+    styles: Schema.Attribute.Component<'elements.style-config', false>;
     variant: Schema.Attribute.Enumeration<['default', 'centered', 'wide']> &
       Schema.Attribute.DefaultTo<'default'>;
   };
@@ -182,6 +184,7 @@ export interface BlocksFeatures extends Struct.ComponentSchema {
   };
   attributes: {
     description: Schema.Attribute.Text;
+    styles: Schema.Attribute.Component<'elements.style-config', false>;
     title: Schema.Attribute.String;
   };
 }
@@ -195,7 +198,7 @@ export interface BlocksHeader extends Struct.ComponentSchema {
   };
   attributes: {
     links: Schema.Attribute.Component<'elements.link', true>;
-    logo: Schema.Attribute.Media<'images'>;
+    logo: Schema.Attribute.Component<'elements.logo', false>;
     variant: Schema.Attribute.Enumeration<['default', 'centered', 'minimal']> &
       Schema.Attribute.DefaultTo<'default'>;
   };
@@ -215,6 +218,7 @@ export interface BlocksHero extends Struct.ComponentSchema {
     image: Schema.Attribute.Media<'images'>;
     imagePosition: Schema.Attribute.Enumeration<['left', 'right']> &
       Schema.Attribute.DefaultTo<'right'>;
+    styles: Schema.Attribute.Component<'elements.style-config', false>;
     title: Schema.Attribute.String & Schema.Attribute.Required;
     variant: Schema.Attribute.Enumeration<
       ['default', 'centered-image', 'hero-banner']
@@ -368,6 +372,7 @@ export interface BlocksTestimonial extends Struct.ComponentSchema {
   };
   attributes: {
     sectionTitle: Schema.Attribute.String;
+    styles: Schema.Attribute.Component<'elements.style-config', false>;
     testimonials: Schema.Attribute.Component<'elements.testimonial-item', true>;
     variant: Schema.Attribute.Enumeration<['grid', 'carousel', 'single']> &
       Schema.Attribute.DefaultTo<'grid'>;
@@ -495,6 +500,36 @@ export interface ElementsLocation extends Struct.ComponentSchema {
   };
 }
 
+export interface ElementsLogo extends Struct.ComponentSchema {
+  collectionName: 'components_elements_logos';
+  info: {
+    description: 'Logo component with variant and size options';
+    displayName: 'Logo';
+    icon: 'picture';
+  };
+  attributes: {
+    height: Schema.Attribute.Integer &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 1000;
+          min: 0;
+        },
+        number
+      >;
+    media: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
+    variant: Schema.Attribute.Enumeration<['square', 'circle']> &
+      Schema.Attribute.DefaultTo<'square'>;
+    width: Schema.Attribute.Integer &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 1000;
+          min: 0;
+        },
+        number
+      >;
+  };
+}
+
 export interface ElementsProductItem extends Struct.ComponentSchema {
   collectionName: 'components_elements_product_items';
   info: {
@@ -508,6 +543,20 @@ export interface ElementsProductItem extends Struct.ComponentSchema {
     image: Schema.Attribute.Media<'images'>;
     name: Schema.Attribute.String & Schema.Attribute.Required;
     price: Schema.Attribute.String;
+  };
+}
+
+export interface ElementsStyleConfig extends Struct.ComponentSchema {
+  collectionName: 'components_elements_style_configs';
+  info: {
+    description: 'Configuration for component styles';
+    displayName: 'Style Config';
+    icon: 'paint-brush';
+  };
+  attributes: {
+    className: Schema.Attribute.String;
+    elementId: Schema.Attribute.String;
+    inlineStyles: Schema.Attribute.JSON;
   };
 }
 
@@ -643,7 +692,9 @@ declare module '@strapi/strapi' {
       'elements.feature-item': ElementsFeatureItem;
       'elements.link': ElementsLink;
       'elements.location': ElementsLocation;
+      'elements.logo': ElementsLogo;
       'elements.product-item': ElementsProductItem;
+      'elements.style-config': ElementsStyleConfig;
       'elements.testimonial-item': ElementsTestimonialItem;
       'shared.list-item': SharedListItem;
       'shared.media': SharedMedia;

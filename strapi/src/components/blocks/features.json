@@ -12,6 +12,11 @@
     },
     "description": {
       "type": "text"
+    },
+    "styles": {
+      "type": "component",
+      "repeatable": false,
+      "component": "elements.style-config"
     }
   }
 }
