@@ -37,29 +37,6 @@ const EditorContext = createContext({
     setControls: (_undo: any, _redo: any, _toggleLeft: any, _toggleRight: any) => { },
 });
 
-const LICENCE_SERVER = "https://licence.wc8.io/strapi-page-builder";
-
-const checkLicence = async (apiKey: string) => {
-    let result = { tokens: null, error: null };
-    try {
-        const response = await fetch(`${LICENCE_SERVER}/editor`, {
-            method: "GET",
-            headers: apiKey ? { Authorization: `Bearer ${apiKey}` } : undefined,
-        });
-        if (response.status < 200 || response.status >= 300) {
-            console.error(
-                `[Strapi Page Builder] Licence Server Error ${response.statusText || "Unauthorized"
-                }`
-            );
-            return { ...result, error: response.statusText || "Unauthorized" };
-        }
-        const data = await response.json();
-        return { ...result, ...data };
-    } catch (e: any) {
-        console.error(`[Strapi Page Builder] Licence Server Error ${e.message}`);
-        return { ...result, error: "Unable to communicate with licence server" };
-    }
-};
 
 const sendMessage = (message: any) => {
     if (window.parent && window.parent.postMessage) {
@@ -70,14 +47,12 @@ const sendMessage = (message: any) => {
 // Editor Component
 export function Editor({
     config,
-    apiKey,
     strapi,
 }: {
     config: any;
-    apiKey: string;
     strapi: any;
 }) {
-    const [error, setError] = useState("");
+
     const [permissions, setPermissions] = useState({
         read: false,
         edit: false,
@@ -128,26 +103,35 @@ export function Editor({
     // Keyboard Shortcuts
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
+            console.log('[Page Builder] KeyDown:', e.key, 'Ctrl:', e.ctrlKey, 'Meta:', e.metaKey);
             if ((e.ctrlKey || e.metaKey) && e.key === "s") {
                 e.preventDefault();
+                e.stopPropagation();
+                console.log('[Page Builder] Shortcut: Save');
                 saveTemplate();
             }
             if ((e.ctrlKey || e.metaKey) && e.key === "z") {
                 e.preventDefault();
+                e.stopPropagation();
                 if (e.shiftKey) {
+                    console.log('[Page Builder] Shortcut: Redo');
                     redoRef.current();
                 } else {
+                    console.log('[Page Builder] Shortcut: Undo');
                     undoRef.current();
                 }
             }
             if ((e.ctrlKey || e.metaKey) && e.key === "y") {
                 e.preventDefault();
+                e.stopPropagation();
+                console.log('[Page Builder] Shortcut: Redo');
                 redoRef.current();
             }
         };
-        window.addEventListener("keydown", handleKeyDown);
+        // Use capture to ensure we get the event before other handlers
+        document.addEventListener("keydown", handleKeyDown, true);
         return () => {
-            window.removeEventListener("keydown", handleKeyDown);
+            document.removeEventListener("keydown", handleKeyDown, true);
         };
     }, [saveTemplate]);
 
@@ -199,30 +183,13 @@ export function Editor({
             }
         };
         window.addEventListener("message", handleMessage);
+
+        // Send CHILD_READY after message handler is set up
+        console.log('[Editor] Sending CHILD_READY message to parent');
+        sendMessage({ type: "child_ready", data: {} });
+
         return () => window.removeEventListener("message", handleMessage);
     }, [saveTemplate]);
-
-    useEffect(() => {
-        if (!apiKey) throw new Error("API key is missing");
-        checkLicence(apiKey).then(({ tokens, error }) => {
-            if (error) {
-                setError(error);
-                return;
-            }
-            if (!tokens || !tokens.length) {
-                setError("NO_TOKENS");
-                return;
-            }
-            const token = new URL(window.location.href).searchParams.get(
-                "_pagebuilderToken"
-            );
-            if (!token || !(tokens || []).includes(token)) {
-                setError("INVALID_TOKEN");
-                return;
-            }
-            sendMessage({ type: "child_ready", data: {} });
-        });
-    }, [apiKey]);
 
     return (
         <EditorContext.Provider
@@ -233,23 +200,8 @@ export function Editor({
             }}
         >
             <div style={{ position: "relative", width: "100vw", height: "100vh" }}>
-                {error ? (
-                    <div
-                        style={{
-                            display: "flex",
-                            width: "100vw",
-                            height: "100vh",
-                            alignItems: "center",
-                            justifyContent: "center",
-                        }}
-                    >
-                        <div style={{ width: "50vw", height: "50vh" }}>
-                            <h3>Page Builder Error</h3>
-                            <span>{error}</span>
-                        </div>
-                    </div>
-                ) : null}
-                {!error && templateJson && permissions.read ? (
+
+                {templateJson && permissions.read ? (
                     <Puck
                         config={processConfig({ ...strapi, locale: locale }, config)}
                         data={{ content: [], root: {}, zones: {}, ...templateJson }}
@@ -286,6 +238,54 @@ export function Editor({
 const PreviewWrapper = ({ }) => {
     const { appState, dispatch, history } = usePuck();
     const { templateJson, setEditorData, setControls } = useContext(EditorContext);
+
+    // Keyboard shortcuts for component actions
+    // Keyboard shortcuts for component actions
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            // Delete selected component (Delete or Backspace key)
+            if ((e.key === "Delete" || e.key === "Backspace") && appState.ui.itemSelector) {
+                // Ignore if typing in an input or textarea
+                const target = e.target as HTMLElement;
+                if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable) {
+                    return;
+                }
+
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('[Page Builder] Shortcut: Delete component');
+                const { index, zone } = appState.ui.itemSelector;
+                if (index !== undefined) {
+                    dispatch({
+                        type: "remove",
+                        index,
+                        zone: zone || "",
+                    });
+                }
+            }
+
+            // Duplicate selected component (Ctrl/Cmd+D)
+            if ((e.ctrlKey || e.metaKey) && e.key === "d" && appState.ui.itemSelector) {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('[Page Builder] Shortcut: Duplicate component');
+                const { index, zone } = appState.ui.itemSelector;
+                if (index !== undefined) {
+                    dispatch({
+                        type: "duplicate",
+                        sourceIndex: index,
+                        sourceZone: zone || "",
+                    });
+                }
+            }
+        };
+
+        // Use capture to ensure we get the event before other handlers
+        document.addEventListener("keydown", handleKeyDown, true);
+        return () => {
+            document.removeEventListener("keydown", handleKeyDown, true);
+        };
+    }, [appState.ui.itemSelector, dispatch]);
 
     useEffect(() => {
         const toggleLeft = () => {
